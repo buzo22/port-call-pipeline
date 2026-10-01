@@ -1,0 +1,6 @@
+port_code,port_name,lat,lon,radius_km
+USLAX,San Pedro Bay Port Complex (Los Angeles / Long Beach),33.7450,-118.2400,8
+USHOU,Port of Houston (Barbours Cut),29.6800,-95.0100,5
+USSAV,Port of Savannah (Garden City),32.1200,-81.1400,5
+USNYC,Port of New York and New Jersey (Newark / Elizabeth),40.6800,-74.1500,5
+USSEA,Port of Seattle,47.5800,-122.3500,5

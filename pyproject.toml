@@ -7,7 +7,7 @@ name = "portcalls"
 version = "0.1.0"
 description = "Turns public AIS vessel positions into trusted port call facts."
 requires-python = ">=3.10"
-dependencies = ["duckdb>=1.1"]
+dependencies = ["duckdb>=1.1", "dbt-duckdb>=1.8"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

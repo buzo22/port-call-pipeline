@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: fct_port_calls
+    description: >
+      One row per vessel port call. A port call is a visit in which the vessel
+      was at rest for at least min_port_call_at_rest_hours. Use is_complete to
+      restrict duration analysis to calls whose arrival and departure were observed.
+    columns:
+      - name: port_call_id
+        data_tests: [unique, not_null]
+      - name: port_code
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('ports')
+                field: port_code
+      - name: vessel_group
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['cargo', 'tanker']
+      - name: is_complete
+        data_tests: [not_null]

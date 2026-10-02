@@ -16,6 +16,8 @@ vars:
   visit_max_gap_hours: 6
   # Speed below which a vessel counts as at rest.
   at_rest_sog_knots: 0.5
+  # A visit becomes a port call only if the vessel was at rest at least this long.
+  min_port_call_at_rest_hours: 1
 
 seeds:
   portcalls:
@@ -32,4 +34,6 @@ models:
     staging:
       +materialized: table
     intermediate:
+      +materialized: table
+    marts:
       +materialized: table

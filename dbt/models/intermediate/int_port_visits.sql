@@ -57,6 +57,8 @@ visits as (
         sum(case when sog_knots < {{ var('at_rest_sog_knots') }}
                   and seconds_to_next <= {{ max_gap_seconds }}
                  then seconds_to_next else 0 end) / 3600.0 as at_rest_hours,
+                 min(observed_at) filter (where sog_knots < {{ var('at_rest_sog_knots') }}) as first_at_rest_at,
+                 max(observed_at) filter (where sog_knots < {{ var('at_rest_sog_knots') }}) as last_at_rest_at,
         max(vessel_type)  as vessel_type_code
     from numbered
     group by mmsi, port_code, visit_seq

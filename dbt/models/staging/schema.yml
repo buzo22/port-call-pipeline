@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_ais_positions
+    description: One clean row per vessel per timestamp. Implements data rules R1-R4.
+    columns:
+      - name: mmsi
+        description: Maritime Mobile Service Identity of the vessel.
+        data_tests: [not_null]
+      - name: observed_at
+        description: UTC time of the position report.
+        data_tests: [not_null]
+      - name: lat
+        data_tests: [not_null]
+      - name: lon
+        data_tests: [not_null]
+      - name: is_implausible_speed
+        description: True when reported speed exceeds 50 knots (rule R4). Flagged, not removed.

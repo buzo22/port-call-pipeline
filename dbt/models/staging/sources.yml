@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: ais
+    description: Raw NOAA AIS GeoParquet, filtered to port areas at ingest.
+    tables:
+      - name: positions
+        meta:
+          external_location: "read_parquet('{{ env_var('AIS_RAW_GLOB', '../data/raw/ais/*/*.parquet') }}', hive_partitioning = true)"

@@ -1,0 +1,31 @@
+name: portcalls
+version: "0.1.0"
+config-version: 2
+profile: portcalls
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+vars:
+  # Vessel type codes in scope: cargo (70-79) and tanker (80-89).
+  scope_vessel_type_min: 70
+  scope_vessel_type_max: 89
+
+seeds:
+  portcalls:
+    ports:
+      +column_types:
+        port_code: varchar
+        port_name: varchar
+        lat: double
+        lon: double
+        radius_km: double
+
+models:
+  portcalls:
+    staging:
+      +materialized: table
+    intermediate:
+      +materialized: table

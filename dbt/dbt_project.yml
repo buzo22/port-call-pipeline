@@ -12,6 +12,10 @@ vars:
   # Vessel type codes in scope: cargo (70-79) and tanker (80-89).
   scope_vessel_type_min: 70
   scope_vessel_type_max: 89
+  # A ping more than this many hours after the previous ping in the same port starts a new visit.
+  visit_max_gap_hours: 6
+  # Speed below which a vessel counts as at rest.
+  at_rest_sog_knots: 0.5
 
 seeds:
   portcalls:

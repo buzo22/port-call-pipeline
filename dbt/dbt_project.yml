@@ -20,6 +20,8 @@ vars:
   min_port_call_at_rest_hours: 1
   # Implied speed above which a ping is physically unreachable.
   max_plausible_speed_knots: 60
+  # More impossible jumps than this in one UTC day means two transmitters share an MMSI.
+  identity_conflict_min_jumps: 4
 
 seeds:
   portcalls:

@@ -5,6 +5,7 @@ with visits as (
 
     select * from {{ ref('int_port_visits') }}
     where at_rest_hours >= {{ var('min_port_call_at_rest_hours') }}
+        and not has_identity_conflict
 
 ),
 

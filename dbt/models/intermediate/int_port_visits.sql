@@ -21,7 +21,6 @@ window_bounds as (
 
 sequenced as (
 
-    -- Step 1: time since the previous ping and until the next one.
     select
         *,
         epoch(observed_at - lag(observed_at) over w)  as seconds_since_prev,
@@ -33,7 +32,6 @@ sequenced as (
 
 numbered as (
 
-    -- Steps 2 and 3: mark visit starts, then number visits with a running total.
     select
         *,
         sum(case when seconds_since_prev is null or seconds_since_prev > {{ max_gap_seconds }}
@@ -53,12 +51,11 @@ visits as (
         min(observed_at)  as entered_at,
         max(observed_at)  as exited_at,
         count(*)          as position_count,
-        -- At-rest time: intervals that start on an at-rest ping and stay within the visit.
         sum(case when sog_knots < {{ var('at_rest_sog_knots') }}
                   and seconds_to_next <= {{ max_gap_seconds }}
                  then seconds_to_next else 0 end) / 3600.0 as at_rest_hours,
-                 min(observed_at) filter (where sog_knots < {{ var('at_rest_sog_knots') }}) as first_at_rest_at,
-                 max(observed_at) filter (where sog_knots < {{ var('at_rest_sog_knots') }}) as last_at_rest_at,
+        min(observed_at) filter (where sog_knots < {{ var('at_rest_sog_knots') }}) as first_at_rest_at,
+        max(observed_at) filter (where sog_knots < {{ var('at_rest_sog_knots') }}) as last_at_rest_at,
         max(vessel_type)  as vessel_type_code
     from numbered
     group by mmsi, port_code, visit_seq
@@ -69,6 +66,11 @@ select
     md5(concat_ws('|', mmsi, port_code, entered_at))                           as visit_id,
     visits.*,
     entered_at <= data_start + to_hours({{ var('visit_max_gap_hours') }})     as starts_at_window_edge,
-    exited_at  >= data_end   - to_hours({{ var('visit_max_gap_hours') }})     as ends_at_window_edge
+    exited_at  >= data_end   - to_hours({{ var('visit_max_gap_hours') }})     as ends_at_window_edge,
+    exists (
+        select 1 from {{ ref('int_identity_conflicts') }} c
+        where c.mmsi = visits.mmsi
+          and c.conflict_date between visits.entered_at::date and visits.exited_at::date
+    )                                                                          as has_identity_conflict
 from visits
 cross join window_bounds

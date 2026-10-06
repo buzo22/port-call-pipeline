@@ -18,6 +18,8 @@ vars:
   at_rest_sog_knots: 0.5
   # A visit becomes a port call only if the vessel was at rest at least this long.
   min_port_call_at_rest_hours: 1
+  # Implied speed above which a ping is physically unreachable.
+  max_plausible_speed_knots: 60
 
 seeds:
   portcalls:

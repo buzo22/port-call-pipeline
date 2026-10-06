@@ -5,4 +5,8 @@ portcalls:
       type: duckdb
       path: "{{ env_var('DUCKDB_PATH', '../data/warehouse.duckdb') }}"
       extensions: [spatial]
-      threads: 4
+      threads: 1
+      settings:
+        memory_limit: "3GB"
+        threads: 2
+        preserve_insertion_order: false
